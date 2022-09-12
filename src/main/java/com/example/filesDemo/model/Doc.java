@@ -23,12 +23,13 @@ public class Doc {
     private String docType;
 
     @Lob
-    private byte[] data;
+    private byte [] encData;
 
-    public Doc(String docname, String docType, byte[] data) {
+    public Doc(String docname, String docType, byte[] encData) {
         this.docName=docname;
-        this.data = data;
+//        this.data = data;
         this.docType = docType;
+        this.encData = encData;
     }
 
     @Override
@@ -37,7 +38,7 @@ public class Doc {
                 "id=" + id +
                 ", docName='" + docName + '\'' +
                 ", docType='" + docType + '\'' +
-                ", data=" + Arrays.toString(data) +
+                ", encData=" + Arrays.toString(encData) +
                 '}';
     }
 }
