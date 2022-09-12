@@ -31,7 +31,6 @@ public class FileController {
     private static Key generateKey() throws Exception {
         Key key = null;
         key = new SecretKeySpec(keyValue, ALGO);
-        System.out.println("KEY:=============>"+key);
         return key;
     }
 

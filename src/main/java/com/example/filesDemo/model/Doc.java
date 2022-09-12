@@ -18,16 +18,13 @@ public class Doc {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     private String docName;
     private String docType;
-
     @Lob
     private byte [] encData;
 
     public Doc(String docname, String docType, byte[] encData) {
         this.docName=docname;
-//        this.data = data;
         this.docType = docType;
         this.encData = encData;
     }

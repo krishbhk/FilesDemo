@@ -36,20 +36,13 @@ public class FileStorageService {
 
         Key key = null;
         key = new SecretKeySpec(keyValue, ALGO);
-        System.out.println("KEY:=============>"+key);
         return key;
     }
 
     public Doc saveFile(MultipartFile file) throws Exception {
         String docname = file.getOriginalFilename();
         String doctype = file.getContentType();
-        byte[] docdata = file.getBytes();
-        byte[] encData = encrypt(docdata);
-
-
-
-
-        System.out.println("---------------"+docname+"======"+doctype+"->>>>>>>>>>>>>"+docdata+"<><><><><><><><>"+encData);
+        byte[] encData = encrypt(file.getBytes());
 
             Doc doc = new Doc(docname,doctype,encData);
             return filesRepo.save(doc);
