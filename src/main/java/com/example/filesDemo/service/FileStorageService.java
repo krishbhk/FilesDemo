@@ -1,5 +1,6 @@
 package com.example.filesDemo.service;
 
+import com.example.filesDemo.encryption.AES;
 import com.example.filesDemo.model.Doc;
 import com.example.filesDemo.repository.FilesRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
-import java.io.IOException;
 import java.security.Key;
 import java.util.List;
 import java.util.Optional;
@@ -20,33 +20,13 @@ public class FileStorageService {
     @Autowired
     private FilesRepo filesRepo;
 
-    private static final String ALGO = "AES";
-    private static final byte[] keyValue = "Ad0#2s!3oGyRq!5F".getBytes();
-
-    public static byte[] encrypt(byte[] Data) throws Exception {
-        Key key = generateKey();
-        Cipher c = Cipher.getInstance(ALGO);
-        c.init(Cipher.ENCRYPT_MODE, key);
-        byte[] encVal = c.doFinal(Data);
-        //String encryptedValue = new BASE64Encoder().encode(encVal);
-        return encVal;
-    }
-
-    private static Key generateKey() throws Exception {
-
-        Key key = null;
-        key = new SecretKeySpec(keyValue, ALGO);
-        return key;
-    }
-
     public Doc saveFile(MultipartFile file) throws Exception {
         String docname = file.getOriginalFilename();
         String doctype = file.getContentType();
-        byte[] encData = encrypt(file.getBytes());
+        byte[] encData = AES.encrypt(file.getBytes());
 
             Doc doc = new Doc(docname,doctype,encData);
             return filesRepo.save(doc);
-//            return savedDoc;
     }
 
     public Optional<Doc> getFile(Integer fileId) {
