@@ -7,10 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.crypto.Cipher;
-import javax.crypto.spec.SecretKeySpec;
-
-import java.security.Key;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,5 +35,9 @@ public class FileStorageService {
 
     public List<Doc> getFiles(){
         return filesRepo.findAll();
+    }
+
+    public void deleteFile(Integer fileId){
+        filesRepo.deleteById(fileId);
     }
 }

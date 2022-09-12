@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface FilesRepo extends JpaRepository<Doc,Integer> {
 
     Optional<Doc> findByDocName(String fileName);
+
+    void deleteById(Integer id);
 }

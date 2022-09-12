@@ -14,9 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.crypto.spec.SecretKeySpec;
-import javax.crypto.Cipher;
-import java.security.Key;
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 
 @Controller
@@ -37,6 +35,12 @@ public class FileController {
         for (MultipartFile file: files) {
             fileStorageService.saveFile(file);
         }
+        return "redirect:/";
+    }
+
+    @GetMapping("/files/{fileId}")
+    public String deleteFile(@PathVariable Integer fileId) throws Exception{
+        fileStorageService.deleteFile(fileId);
         return "redirect:/";
     }
 

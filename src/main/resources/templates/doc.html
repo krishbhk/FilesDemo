@@ -9,7 +9,7 @@
 </head>
 <body class = "container my-5">
 <div class = "my-3">
-    <h3>Upload Multiple Files</h3>
+    <h3>Upload Files</h3>
     <div class="mb-3">
     <form id="uploadFiles" class="form-label" name="uploadFiles" method="post" th:action=@{/uploadFiles} encType="multipart/form-data">
         <input type="file" class="form-control" name="files" multiple required />
@@ -26,6 +26,7 @@
             <th>Id</th>
             <th>Name</th>
             <th>Download Link</th>
+            <th>Delete Link</th>
         </tr>
         </thead>
         <tbody>
@@ -33,6 +34,7 @@
             <td th:text="${doc.Id}" />
             <td th:text="${doc.docName}"/>
             <td><a th:href="@{'/downloadFile/'+${doc.id}}" target="_blank" >Download</a></td>
+            <td><a th:href="@{'/files/'+${doc.id}}" data-method="DELETE">Delete</a></td>
         </tr>
         </tbody>
     </table>
