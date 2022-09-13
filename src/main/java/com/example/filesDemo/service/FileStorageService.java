@@ -16,17 +16,31 @@ public class FileStorageService {
     @Autowired
     private FilesRepo filesRepo;
 
+    private final String key = "Ad0#2s!3oGyRq!5F";
+
     public Doc saveFile(MultipartFile file) throws Exception {
+
+
+
         String docname = file.getOriginalFilename();
         String doctype = file.getContentType();
-        byte[] encData = AES.encrypt(file.getBytes());
 
-            Doc doc = new Doc(docname,doctype,encData);
+        byte[] encData = AES.encrypt(key, file.getBytes());
+
+            Doc doc = new Doc(docname,doctype,key, encData);
             return filesRepo.save(doc);
     }
 
     public Optional<Doc> getFile(Integer fileId) {
+
+//        System.out.println();
+
         return filesRepo.findById(fileId);
+    }
+
+    public String getKey(Integer fileId){
+          Optional<Doc> reqDoclist = filesRepo.findById(fileId);
+          return reqDoclist.get().getDocKey();
     }
 
     public Optional<Doc> getFile(String fileName) {

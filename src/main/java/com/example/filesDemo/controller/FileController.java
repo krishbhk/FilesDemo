@@ -47,9 +47,13 @@ public class FileController {
     @GetMapping("/downloadFile/{fileId}")
     public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable Integer fileId) throws Exception {
         Doc doc = fileStorageService.getFile(fileId).get();
+
+        String docKey = fileStorageService.getKey(fileId);
+        System.out.println(docKey);
+
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(doc.getDocType()))
                 .header(HttpHeaders.CONTENT_DISPOSITION,"attachment:filename=\""+doc.getDocName()+"\"")
-                .body(new ByteArrayResource(AES.decrypt(doc.getEncData())));
+                .body(new ByteArrayResource(AES.decrypt(docKey,doc.getEncData())));
     }
 }

@@ -1,15 +1,13 @@
 package com.example.filesDemo.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Arrays;
 
+@Builder
 @Entity
-@Table(name="files")
+@Table(name = "files")
 @Setter
 @Getter
 @AllArgsConstructor
@@ -20,13 +18,17 @@ public class Doc {
     private Integer id;
     private String docName;
     private String docType;
+
+    private String docKey;
     @Lob
     private byte [] encData;
 
-    public Doc(String docname, String docType, byte[] encData) {
+    public Doc(String docname, String docType, String key, byte[] encData) {
         this.docName=docname;
         this.docType = docType;
+        this.docKey = key;
         this.encData = encData;
+
     }
 
     @Override
