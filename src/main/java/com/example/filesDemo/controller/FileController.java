@@ -1,6 +1,7 @@
 package com.example.filesDemo.controller;
 
 import com.example.filesDemo.encryption.AES;
+import com.example.filesDemo.encryption.KeyEncrypt;
 import com.example.filesDemo.model.Doc;
 import com.example.filesDemo.service.FileStorageService;
 
@@ -49,11 +50,16 @@ public class FileController {
         Doc doc = fileStorageService.getFile(fileId).get();
 
         String docKey = fileStorageService.getKey(fileId);
-        System.out.println(docKey);
+
+        String encKey = KeyEncrypt.encrypt(docKey,"MASTER_KEY");
+        String decryptKey = KeyEncrypt.decrypt(docKey, "MASTER_KEY");
+
+
+        System.out.println(docKey+"------------------------>enc::"+encKey+"--->>>>>>>>>>>>>>decryptKey::::"+decryptKey);
 
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(doc.getDocType()))
                 .header(HttpHeaders.CONTENT_DISPOSITION,"attachment:filename=\""+doc.getDocName()+"\"")
-                .body(new ByteArrayResource(AES.decrypt(docKey,doc.getEncData())));
+                .body(new ByteArrayResource(AES.decrypt(decryptKey,doc.getEncData())));
     }
 }

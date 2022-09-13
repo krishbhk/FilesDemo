@@ -7,10 +7,6 @@ import java.security.Key;
 public class AES {
     private static final String ALGO = "AES";
 
-    private static final String masterKey = "MASTER_KEY";
-
-    static String EncKey;
-
     public static byte[] encrypt(String fileKey,byte[] Data) throws Exception {
 
         Key key = new SecretKeySpec(fileKey.getBytes(), ALGO);
@@ -28,7 +24,4 @@ public class AES {
         return c.doFinal(encryptedData);
     }
 
-    public static String getEncKey(){
-        return EncKey;
-    }
 }

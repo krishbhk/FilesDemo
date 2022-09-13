@@ -1,6 +1,7 @@
 package com.example.filesDemo.service;
 
 import com.example.filesDemo.encryption.AES;
+import com.example.filesDemo.encryption.KeyEncrypt;
 import com.example.filesDemo.model.Doc;
 import com.example.filesDemo.repository.FilesRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +27,10 @@ public class FileStorageService {
         String doctype = file.getContentType();
 
         byte[] encData = AES.encrypt(key, file.getBytes());
+        String encKey = KeyEncrypt.encrypt(key,"MASTER_KEY");
 
-            Doc doc = new Doc(docname,doctype,key, encData);
-            return filesRepo.save(doc);
+        Doc doc = new Doc(docname,doctype,encKey, encData);
+        return filesRepo.save(doc);
     }
 
     public Optional<Doc> getFile(Integer fileId) {
