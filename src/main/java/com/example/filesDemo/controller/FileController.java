@@ -1,5 +1,6 @@
 package com.example.filesDemo.controller;
 
+import com.example.filesDemo.constants.ConstString;
 import com.example.filesDemo.encryption.AES;
 import com.example.filesDemo.encryption.KeyEncrypt;
 import com.example.filesDemo.model.Doc;
@@ -56,7 +57,7 @@ public class FileController {
         String docKey = fileStorageService.getKey(fileId);
 
 //        String encKey = KeyEncrypt.encrypt(docKey,"MASTER_KEY");
-        String decryptKey = KeyEncrypt.decrypt(docKey, "MASTER_KEY");
+        String decryptKey = KeyEncrypt.decrypt(docKey, ConstString.getMasterKey());
         System.out.println("DECRYPT KEY::::"+decryptKey);
 
 

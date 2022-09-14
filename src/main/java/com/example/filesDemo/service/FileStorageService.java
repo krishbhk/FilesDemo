@@ -1,5 +1,6 @@
 package com.example.filesDemo.service;
 
+import com.example.filesDemo.constants.ConstString;
 import com.example.filesDemo.encryption.AES;
 import com.example.filesDemo.encryption.KeyEncrypt;
 import com.example.filesDemo.model.Doc;
@@ -26,7 +27,7 @@ public class FileStorageService {
         String doctype = file.getContentType();
 
         byte[] encData = AES.encrypt(key, file.getBytes());
-        String encKey = KeyEncrypt.encrypt(key,"MASTER_KEY");
+        String encKey = KeyEncrypt.encrypt(key, ConstString.getMasterKey());
 
         Doc doc = new Doc(docname,doctype,encKey, encData);
         return filesRepo.save(doc);
@@ -39,10 +40,10 @@ public class FileStorageService {
         String keyNew = RandomStringGenerator.getString();
         this.key =keyNew;
         for (Doc d : docs ) {
-            String dKey = KeyEncrypt.decrypt(d.getDocKey(), "MASTER_KEY");
+            String dKey = KeyEncrypt.decrypt(d.getDocKey(), ConstString.getMasterKey());
             byte[] dData = AES.decrypt(dKey, d.getEncData());
 
-            Doc d1 = new Doc(d.getId(),d.getDocName(),d.getDocType(),KeyEncrypt.encrypt(keyNew, "MASTER_KEY"), AES.encrypt(keyNew, dData));
+            Doc d1 = new Doc(d.getId(),d.getDocName(),d.getDocType(),KeyEncrypt.encrypt(keyNew, ConstString.getMasterKey()), AES.encrypt(keyNew, dData));
             System.out.println(d1.getDocKey());
             filesRepo.save(d1);
         }
