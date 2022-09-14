@@ -3,6 +3,7 @@ package com.example.filesDemo.service;
 import com.example.filesDemo.encryption.AES;
 import com.example.filesDemo.encryption.KeyEncrypt;
 import com.example.filesDemo.model.Doc;
+import com.example.filesDemo.random.RandomStringGenerator;
 import com.example.filesDemo.repository.FilesRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,11 +18,9 @@ public class FileStorageService {
     @Autowired
     private FilesRepo filesRepo;
 
-    private final String key = "Ad0#2s!3oGyRq!5F";
+    private String key;
 
     public Doc saveFile(MultipartFile file) throws Exception {
-
-
 
         String docname = file.getOriginalFilename();
         String doctype = file.getContentType();
@@ -33,10 +32,23 @@ public class FileStorageService {
         return filesRepo.save(doc);
     }
 
+    public void changeKey() throws Exception {
+
+        System.out.println("Change Key is running");
+        List<Doc> docs = getFiles();
+        String keyNew = RandomStringGenerator.getString();
+        this.key =keyNew;
+        for (Doc d : docs ) {
+            String dKey = KeyEncrypt.decrypt(d.getDocKey(), "MASTER_KEY");
+            byte[] dData = AES.decrypt(dKey, d.getEncData());
+
+            Doc d1 = new Doc(d.getId(),d.getDocName(),d.getDocType(),KeyEncrypt.encrypt(keyNew, "MASTER_KEY"), AES.encrypt(keyNew, dData));
+            System.out.println(d1.getDocKey());
+            filesRepo.save(d1);
+        }
+
+    }
     public Optional<Doc> getFile(Integer fileId) {
-
-//        System.out.println();
-
         return filesRepo.findById(fileId);
     }
 

@@ -15,7 +15,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 
 @Controller
@@ -25,8 +24,13 @@ public class FileController {
     private FileStorageService fileStorageService;
 
     @GetMapping("/")
-    public String get(Model model) {
+    public String get(Model model) throws Exception {
         List<Doc> docs = fileStorageService.getFiles();
+        for (Doc d: docs ) {
+            System.out.println(d.getId() + d.getDocKey());
+
+        }
+        fileStorageService.changeKey();
         model.addAttribute("docs", docs);
         return "doc";
     }
@@ -51,11 +55,12 @@ public class FileController {
 
         String docKey = fileStorageService.getKey(fileId);
 
-        String encKey = KeyEncrypt.encrypt(docKey,"MASTER_KEY");
+//        String encKey = KeyEncrypt.encrypt(docKey,"MASTER_KEY");
         String decryptKey = KeyEncrypt.decrypt(docKey, "MASTER_KEY");
+        System.out.println("DECRYPT KEY::::"+decryptKey);
 
 
-        System.out.println(docKey+"------------------------>enc::"+encKey+"--->>>>>>>>>>>>>>decryptKey::::"+decryptKey);
+//        System.out.println(docKey+"------------------------>enc::"+encKey+"--->>>>>>>>>>>>>>decryptKey::::"+decryptKey);
 
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(doc.getDocType()))
